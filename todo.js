@@ -16,18 +16,38 @@ function addTodo(e) {
   const newTodo = todoInput.value.trim();
   // console.log(newTodo);
 
-  addTodoToUI(newTodo);
-
+  if (newTodo === "") {
+    /*     <div class="alert alert-danger" role="alert">
+                        A simple danger alert—check it out!
+                      </div>*/
+    showAlert("danger", "Please enter a Todo...");
+  } else {
+    addTodoToUI(newTodo);
+    showAlert("success", "Todo added successfully");
+  }
   e.preventDefault();
+}
+
+function showAlert(type, message) {
+  const alert = document.createElement("div");
+  alert.className = `alert alert-${type}`;
+  alert.textContent = message;
+  // console.log(alert);
+
+  firstCardBody.appendChild(alert);
+
+  setTimeout(function () {
+    alert.remove();
+  }, 2000);
 }
 
 function addTodoToUI(newTodo) {
   /* <li class="list-group-item d-flex justify-content-between">
         Todo 1
-            <a href = "#" class ="delete-item">
-                <i class = "fa fa-remove"></i>
-            </a>
-    </li> */
+          <a href = "#" class ="delete-item">
+           <i class = "fa fa-remove"></i>
+          </a>
+     </li> */
 
   const listItem = document.createElement("li");
   listItem.className = "list-group-item d-flex justify-content-between";
