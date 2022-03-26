@@ -9,6 +9,14 @@ const clearButton = document.querySelector("#clear-todos");
 eventListeners();
 function eventListeners() {
   form.addEventListener("submit", addTodo);
+  document.addEventListener("DOMContentLoaded", loadAllTodosToUI);
+}
+function loadAllTodosToUI() {
+  let todos = getTodosFromStorage(); 
+
+  todos.forEach(function (todo) {
+    addTodoToUI(todo);
+  });
 }
 function addTodo(e) {
   const newTodo = todoInput.value.trim();
@@ -17,7 +25,7 @@ function addTodo(e) {
   if (newTodo === "") {
     showAlert("danger", "Please enter a Todo...");
   } else {
-    addTodoToUI(newTodo);
+    addTodoToUI(newTodo); 
     addTodoToStorage(newTodo);
     showAlert("success", "Todo added successfully");
   }
@@ -36,6 +44,7 @@ function getTodosFromStorage() {
 
 function addTodoToStorage(newTodo) {
   let todos = getTodosFromStorage();
+
   todos.push(newTodo);
   localStorage.setItem("todos", JSON.stringify(todos));
 }
@@ -48,7 +57,7 @@ function showAlert(type, message) {
   alert.className = `alert alert-${type}`;
   alert.textContent = message;
   // console.log(alert);
-
+  
   firstCardBody.appendChild(alert);
   setTimeout(function () {
     alert.remove();
