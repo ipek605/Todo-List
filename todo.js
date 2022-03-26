@@ -7,35 +7,49 @@ const filter = document.querySelector("#filter");
 const clearButton = document.querySelector("#clear-todos");
 
 eventListeners();
-
 function eventListeners() {
   form.addEventListener("submit", addTodo);
 }
-
 function addTodo(e) {
   const newTodo = todoInput.value.trim();
   // console.log(newTodo);
 
   if (newTodo === "") {
-    /*     <div class="alert alert-danger" role="alert">
-                        A simple danger alert—check it out!
-                      </div>*/
     showAlert("danger", "Please enter a Todo...");
   } else {
     addTodoToUI(newTodo);
+    addTodoToStorage(newTodo);
     showAlert("success", "Todo added successfully");
   }
   e.preventDefault();
 }
+function getTodosFromStorage() {
+  let todos;
+
+  if (localStorage.getItem("todos") === null) {
+    todos = [];
+  } else {
+    todos = JSON.parse(localStorage.getItem("todos"));
+  }
+  return todos;
+}
+
+function addTodoToStorage(newTodo) {
+  let todos = getTodosFromStorage();
+  todos.push(newTodo);
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
 
 function showAlert(type, message) {
+  /*     <div class="alert alert-danger" role="alert">
+                        A simple danger alert—check it out!
+                      </div>*/
   const alert = document.createElement("div");
   alert.className = `alert alert-${type}`;
   alert.textContent = message;
   // console.log(alert);
 
   firstCardBody.appendChild(alert);
-
   setTimeout(function () {
     alert.remove();
   }, 2000);
@@ -63,5 +77,5 @@ function addTodoToUI(newTodo) {
   todoList.appendChild(listItem);
   todoInput.value = "";
 
-  // console.log(listItem);
+  console.log(listItem);
 }
