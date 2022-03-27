@@ -7,12 +7,23 @@ const filter = document.querySelector("#filter");
 const clearButton = document.querySelector("#clear-todos");
 
 eventListeners();
+
 function eventListeners() {
   form.addEventListener("submit", addTodo);
   document.addEventListener("DOMContentLoaded", loadAllTodosToUI);
+
+  secondCardBody.addEventListener("click", deleteTodo);
+}
+function deleteTodo(e) {
+  // console.log(e.target);
+  if (e.target.className === "fa fa-remove") {
+    // console.log("deleting operation");
+    e.target.parentElement.parentElement.remove();
+    showAlert("success", "Todo has been deleted...")
+  }
 }
 function loadAllTodosToUI() {
-  let todos = getTodosFromStorage(); 
+  let todos = getTodosFromStorage();
 
   todos.forEach(function (todo) {
     addTodoToUI(todo);
@@ -46,8 +57,9 @@ function addTodoToStorage(newTodo) {
   let todos = getTodosFromStorage();
 
   todos.push(newTodo);
+
   localStorage.setItem("todos", JSON.stringify(todos));
-}
+  }
 
 function showAlert(type, message) {
   /*     <div class="alert alert-danger" role="alert">
@@ -57,7 +69,6 @@ function showAlert(type, message) {
   alert.className = `alert alert-${type}`;
   alert.textContent = message;
   // console.log(alert);
-  
   firstCardBody.appendChild(alert);
   setTimeout(function () {
     alert.remove();
@@ -83,8 +94,9 @@ function addTodoToUI(newTodo) {
   listItem.appendChild(document.createTextNode(newTodo));
   listItem.appendChild(link);
 
+
   todoList.appendChild(listItem);
   todoInput.value = "";
 
-  console.log(listItem);
+  //console.log(listItem);
 }
