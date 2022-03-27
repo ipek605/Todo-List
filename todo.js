@@ -11,15 +11,30 @@ eventListeners();
 function eventListeners() {
   form.addEventListener("submit", addTodo);
   document.addEventListener("DOMContentLoaded", loadAllTodosToUI);
-
   secondCardBody.addEventListener("click", deleteTodo);
+  filter.addEventListener("keyup", filterTodos);
+}
+
+function filterTodos(e) {
+  // console.log(e.target.value);
+  const filterValue = e.target.value.toLowerCase();
+  const listItems = document.querySelectorAll(".list-group-item");
+  listItems.forEach(function (listItem) {
+    const text = listItem.textContent.toLowerCase();
+
+    if (text.indexOf(filterValue) === -1) {
+      listItem.setAttribute("style", "display:none !important");
+    } else {
+      listItem.setAttribute("style", "display:block");
+    }
+  });
 }
 function deleteTodo(e) {
   // console.log(e.target);
   if (e.target.className === "fa fa-remove") {
     // console.log("deleting operation");
     e.target.parentElement.parentElement.remove();
-    deleteTodoFromStorage(e.target.parentElement.parentElement.textContent); 
+    deleteTodoFromStorage(e.target.parentElement.parentElement.textContent);
     showAlert("success", "Todo has been deleted...");
   }
 }
@@ -70,7 +85,6 @@ function addTodoToStorage(newTodo) {
   let todos = getTodosFromStorage();
 
   todos.push(newTodo);
-
   localStorage.setItem("todos", JSON.stringify(todos));
 }
 
