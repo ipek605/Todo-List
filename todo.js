@@ -19,9 +19,22 @@ function deleteTodo(e) {
   if (e.target.className === "fa fa-remove") {
     // console.log("deleting operation");
     e.target.parentElement.parentElement.remove();
-    showAlert("success", "Todo has been deleted...")
+    deleteTodoFromStorage(e.target.parentElement.parentElement.textContent); 
+    showAlert("success", "Todo has been deleted...");
   }
 }
+
+function deleteTodoFromStorage(deletetodo) {
+  let todos = getTodosFromStorage();
+  todos.forEach(function (todo, index) {
+    if (todo === deletetodo) {
+      todos.splice(index, 1);
+    }
+  });
+
+  localStorage.setItem("todos", JSON.stringify(todos));
+}
+
 function loadAllTodosToUI() {
   let todos = getTodosFromStorage();
 
@@ -36,7 +49,7 @@ function addTodo(e) {
   if (newTodo === "") {
     showAlert("danger", "Please enter a Todo...");
   } else {
-    addTodoToUI(newTodo); 
+    addTodoToUI(newTodo);
     addTodoToStorage(newTodo);
     showAlert("success", "Todo added successfully");
   }
@@ -59,7 +72,7 @@ function addTodoToStorage(newTodo) {
   todos.push(newTodo);
 
   localStorage.setItem("todos", JSON.stringify(todos));
-  }
+}
 
 function showAlert(type, message) {
   /*     <div class="alert alert-danger" role="alert">
@@ -89,14 +102,13 @@ function addTodoToUI(newTodo) {
   const link = document.createElement("a");
   link.href = "#";
   link.className = "delete-item";
-  link.innerHTML = " <i class = 'fa fa-remove'></i>";
+  link.innerHTML = "<i class = 'fa fa-remove'></i>";
 
   listItem.appendChild(document.createTextNode(newTodo));
   listItem.appendChild(link);
 
-
   todoList.appendChild(listItem);
   todoInput.value = "";
 
-  //console.log(listItem);
+  // console.log(listItem);
 }
