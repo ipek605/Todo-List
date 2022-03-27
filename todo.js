@@ -13,8 +13,17 @@ function eventListeners() {
   document.addEventListener("DOMContentLoaded", loadAllTodosToUI);
   secondCardBody.addEventListener("click", deleteTodo);
   filter.addEventListener("keyup", filterTodos);
+  clearButton.addEventListener("click", clearAllTodos);
 }
 
+function clearAllTodos(e){
+  if(confirm("Are you sure you want to delete all?")){
+   // console.log(todoList.firstElementChild); //  
+    while(todoList.firstElementChild != null){
+      todoList.removeChild(todoList.firstElementChild)
+    }
+ }
+ }
 function filterTodos(e) {
   // console.log(e.target.value);
   const filterValue = e.target.value.toLowerCase();
